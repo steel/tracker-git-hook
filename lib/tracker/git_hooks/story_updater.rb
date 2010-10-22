@@ -17,7 +17,7 @@ module Tracker::GitHooks
 
     def parse
       @commits.each do |commit|
-        commit.message.scan(/\[Story\s*#?([0-9]+)\s*(.*?)\]\s*(.*)$/) do |match|
+        commit.message.scan(/\[story\s*#?([0-9]+)\s*(.*?)\]\s*(.*)$/i) do |match|
           story_number = match[0]
           params = match[1]
           comment = match[2]
@@ -61,7 +61,7 @@ module Tracker::GitHooks
       change = {:story_number => story_number.to_i, :commit => commit, :comment => comment}
 
       unless params.nil?
-        params.scan(/(\w+):(\w+|'.*?')/) do |key, value|
+        params.downcase.scan(/(\w+):(\w+|'.*?')/) do |key, value|
           if AUTHORIZED_KEYS.include?(key)
             change[key] = value
           end
