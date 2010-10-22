@@ -17,7 +17,7 @@ module Tracker::GitHooks
 
     def parse
       @commits.each do |commit|
-        commit.message.scan(/\[Story([0-9]+)\s*(.*?)\]\s*(.*)$/) do |match|
+        commit.message.scan(/\[Story\s*#?([0-9]+)\s*(.*?)\]\s*(.*)$/) do |match|
           story_number = match[0]
           params = match[1]
           comment = match[2]
