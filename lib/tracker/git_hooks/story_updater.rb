@@ -37,14 +37,12 @@ module Tracker::GitHooks
         project_number = Configuration[:project_number]
         user_token = Configuration[:api_token]
         project = Tracker.new(project_number, user_token)
-        puts "updating Story#{story_num}"
-
-        if story_hash['state']
-          # story = project.find_story(story_num)
-          # puts "found story: #{story.inspect}\n\n\n\n"
-          # story[:current_state] = story_hash['state']
-          project.update_state(story_num.to_s, story_hash['state'])
-        end
+        puts "Updating Story ##{story_num}"
+        
+        # update state
+        project.update_state(story_num.to_s, story_hash['state']) if story_hash['state']
+        
+        # add comment
         message = build_message(commit, @ref, comment)
         project.add_comment(story_num, message)
       end
